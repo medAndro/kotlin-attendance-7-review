@@ -19,11 +19,12 @@ class Controller(
     private val service: Service,
     private val csvLoadService: CSVLoadService
 ) {
+    private var now = DateTimes.now()
     fun start() {
         val attendanceBook = makeAttendanceBook()
         while(true){
             val selectedMenu = readSelectWithRetry()
-            val isQuit = goMenu(selectedMenu)
+            val isQuit = goMenu(selectedMenu, attendanceBook)
             if (isQuit) {
                 break
             }
@@ -31,7 +32,8 @@ class Controller(
     }
 
     private fun showInfoMessage():String {
-        val now = DateTimes.now()
+        now = DateTimes.now()
+        now = now.minusDays(1)
         val pattern = DateTimeFormatter.ofPattern("MM월 dd일");
         val monthDate = now.format(pattern);
         val dayName = now.dayOfWeek.getDisplayName(TextStyle.NARROW, Locale.KOREAN)
@@ -57,9 +59,9 @@ class Controller(
         }
     }
 
-    private fun goMenu(menuText: String):Boolean{
+    private fun goMenu(menuText: String, attendanceBook: AttendanceBook):Boolean{
         if (menuText == "1"){
-            service.menu1()
+            service.menu1(now, attendanceBook)
         }
         if (menuText == "2"){
             service.menu2()
@@ -106,7 +108,7 @@ class Controller(
         fun create(): Controller {
             val view = View()
             val inputValidator = InputValidator()
-            val service = Service()
+            val service = Service(view)
             val csvLoadService = CSVLoadService()
             return Controller(view, inputValidator, service, csvLoadService)
         }
