@@ -5,11 +5,14 @@ enum class Messages(private val message: String) {
     SUM_START_HEADER("덧셈을 시작합니다"),
     LEFT_VALUE_INPUT("좌변의 값을 입력하세요"),
     RIGHT_VALUE_INPUT("우변의 값을 입력하세요"),
-    SUM_RESULT(
+    START_INFO(
         """
-        덧셈 결과
-        ---
-        %s = %s
+        오늘은 %s %s요일입니다. 기능을 선택해 주세요.
+        1. 출석 확인
+        2. 출석 수정
+        3. 크루별 출석 기록 확인
+        4. 제적 위험자 확인
+        Q. 종료
         """.trimIndent()
     ),
 

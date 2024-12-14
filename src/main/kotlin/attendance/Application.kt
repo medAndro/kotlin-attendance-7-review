@@ -1,8 +1,8 @@
 package attendance
 
-import attendance.controller.GameController
+import attendance.controller.Controller
 
 fun main() {
-    val game = GameController.create()
-    game.gameStart()
+    val attendance = Controller.create()
+    attendance.start()
 }

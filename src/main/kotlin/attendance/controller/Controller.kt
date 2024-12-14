@@ -5,18 +5,26 @@ import attendance.domain.InputValidator
 import attendance.domain.GameService
 import attendance.model.NumberBasket
 import attendance.resources.Messages.*
+import camp.nextstep.edu.missionutils.DateTimes
+import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
+import java.util.Locale
 
-class GameController(
+class Controller(
     private val gameView: GameView,
     private val validator: InputValidator,
     private val gameService: GameService
 ) {
-    fun gameStart() {
-        val numberBasket = generateNumberBasket()
-        gameView.showMessage(SUM_START_HEADER.message())
-        gameView.showBlankLine()
+    fun start() {
+        showInfoMessage()
+    }
 
-        announceSumNumbers(numberBasket)
+    private fun showInfoMessage() {
+        val now = DateTimes.now()
+        val pattern = DateTimeFormatter.ofPattern("MM월 dd일");
+        val monthDate = now.format(pattern);
+        val dayName = now.dayOfWeek.getDisplayName(TextStyle.NARROW, Locale.KOREAN)
+        gameView.showMessage(START_INFO.formattedMessage(monthDate, dayName))
     }
 
     private fun generateNumberBasket(): NumberBasket {
@@ -39,18 +47,18 @@ class GameController(
         }
     }
 
-    private fun announceSumNumbers(numberBasket: NumberBasket) {
-        val expression = gameService.getExpression(numberBasket)
-        val sumValue = gameService.plusTwoNumber(numberBasket)
-        gameView.showMessage(SUM_RESULT.formattedMessage(expression, sumValue))
-    }
+//    private fun announceSumNumbers(numberBasket: NumberBasket) {
+//        val expression = gameService.getExpression(numberBasket)
+//        val sumValue = gameService.plusTwoNumber(numberBasket)
+//        gameView.showMessage(SUM_RESULT.formattedMessage(expression, sumValue))
+//    }
 
     companion object {
-        fun create(): GameController {
+        fun create(): Controller {
             val gameView = GameView()
             val inputValidator = InputValidator()
             val gameService = GameService()
-            return GameController(gameView, inputValidator, gameService)
+            return Controller(gameView, inputValidator, gameService)
         }
     }
 }
