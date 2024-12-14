@@ -2,7 +2,7 @@ package attendance.view
 
 import camp.nextstep.edu.missionutils.Console
 
-class GameView {
+class View {
     // Input Views
     fun readLine(): String {
         return Console.readLine()

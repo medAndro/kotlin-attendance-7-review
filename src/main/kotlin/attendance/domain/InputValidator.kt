@@ -3,9 +3,14 @@ package attendance.domain
 import attendance.resources.Messages.*
 
 class InputValidator {
-    fun validateInteger(input: String): Int {
-        require(input.isNotBlank()) { EMPTY_INPUT.errorMessage() }
-        return input.toIntOrNull() ?: throw IllegalArgumentException(NOT_INTEGER.errorMessage())
+    fun validateSelect(input: String, dateText:String): String {
+        require(input.isNotBlank()) { WRONG_SYNTAX.errorMessage() }
+        if (input != "Q"){
+            require(input in listOf("1", "2", "3", "4")) { WRONG_SYNTAX.errorMessage() }
+        } else {
+            require(input == "Q") { WRONG_SYNTAX.errorMessage() }
+        }
+        return input
     }
 
     // 샘플 코드 모음

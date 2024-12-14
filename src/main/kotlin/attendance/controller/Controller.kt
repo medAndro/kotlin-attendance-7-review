@@ -1,9 +1,9 @@
 package attendance.controller
 
 import attendance.domain.CSVLoadService
-import attendance.view.GameView
+import attendance.view.View
 import attendance.domain.InputValidator
-import attendance.domain.GameService
+import attendance.domain.Service
 import attendance.model.AttendanceBook
 import attendance.model.NumberBasket
 import attendance.resources.AppConfig
@@ -14,28 +14,66 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 class Controller(
-    private val gameView: GameView,
+    private val view: View,
     private val validator: InputValidator,
-    private val gameService: GameService,
+    private val service: Service,
     private val csvLoadService: CSVLoadService
 ) {
     fun start() {
-        showInfoMessage()
         val attendanceBook = makeAttendanceBook()
+        while(true){
+            val selectedMenu = readSelectWithRetry()
+            val isQuit = goMenu(selectedMenu)
+            if (isQuit) {
+                break
+            }
+        }
     }
 
-    private fun showInfoMessage() {
+    private fun showInfoMessage():String {
         val now = DateTimes.now()
         val pattern = DateTimeFormatter.ofPattern("MM월 dd일");
         val monthDate = now.format(pattern);
         val dayName = now.dayOfWeek.getDisplayName(TextStyle.NARROW, Locale.KOREAN)
-        gameView.showMessage(START_INFO.formattedMessage(monthDate, dayName))
+        view.showMessage(START_INFO.formattedMessage(monthDate, dayName))
+
+        return "${monthDate} ${dayName}요일"
     }
 
     private fun makeAttendanceBook(): AttendanceBook{
         val attendBook = AttendanceBook()
         attendBook.addByPair(csvLoadService.loadAttendance(AppConfig.CSV_FILE_LOCATION.value))
         return attendBook
+    }
+
+    private fun readSelectWithRetry(): String {
+        while (true) {
+            try {
+                val dateText = showInfoMessage()
+                return validator.validateSelect(view.readLine(), dateText)
+            } catch (e: IllegalArgumentException) {
+                view.showMessage(e.message ?: INVALID_ERROR.errorMessage())
+            }
+        }
+    }
+
+    private fun goMenu(menuText: String):Boolean{
+        if (menuText == "1"){
+            service.menu1()
+        }
+        if (menuText == "2"){
+            service.menu2()
+        }
+        if (menuText == "3"){
+            service.menu3()
+        }
+        if (menuText == "4"){
+            service.menu4()
+        }
+        if (menuText == "Q"){
+            return true
+        }
+        return false
     }
 
     private fun generateNumberBasket(): NumberBasket {
@@ -50,10 +88,10 @@ class Controller(
     private fun readNumberWithRetry(infoMessage: String): Int {
         while (true) {
             try {
-                gameView.showMessage(infoMessage)
-                return validator.validateInteger(gameView.readLine())
+                view.showMessage(infoMessage)
+//                return validator.validateSelect(view.readLine())
             } catch (e: IllegalArgumentException) {
-                gameView.showMessage(e.message ?: INVALID_ERROR.errorMessage())
+                view.showMessage(e.message ?: INVALID_ERROR.errorMessage())
             }
         }
     }
@@ -66,11 +104,11 @@ class Controller(
 
     companion object {
         fun create(): Controller {
-            val gameView = GameView()
+            val view = View()
             val inputValidator = InputValidator()
-            val gameService = GameService()
+            val service = Service()
             val csvLoadService = CSVLoadService()
-            return Controller(gameView, inputValidator, gameService, csvLoadService)
+            return Controller(view, inputValidator, service, csvLoadService)
         }
     }
 }
