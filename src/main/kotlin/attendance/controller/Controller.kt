@@ -60,17 +60,21 @@ class Controller(
     }
 
     private fun goMenu(menuText: String, attendanceBook: AttendanceBook):Boolean{
-        if (menuText == "1"){
-            service.menu1(now, attendanceBook)
-        }
-        if (menuText == "2"){
-            service.menu2()
-        }
-        if (menuText == "3"){
-            service.menu3()
-        }
-        if (menuText == "4"){
-            service.menu4()
+        try {
+            if (menuText == "1"){
+                service.menu1(now, attendanceBook)
+            }
+            if (menuText == "2"){
+                service.menu2()
+            }
+            if (menuText == "3"){
+                service.menu3()
+            }
+            if (menuText == "4"){
+                service.menu4()
+            }
+        } catch (e: IllegalArgumentException) {
+            view.showMessage(e.message ?: INVALID_ERROR.errorMessage())
         }
         if (menuText == "Q"){
             return true
