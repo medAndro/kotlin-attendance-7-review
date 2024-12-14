@@ -38,6 +38,16 @@ class AttendanceBook {
         return member.isAttendedNow(now)
     }
 
+    fun addAttendanceDate(nickName:String, date:LocalDateTime){
+        val member = getMemberByName(nickName)
+        member.addDate(date)
+    }
+
+    fun editAttendanceDate(nickName:String, date:LocalDateTime):LocalDateTime{
+        val member = getMemberByName(nickName)
+        return member.editDate(date)
+    }
+
     private fun getMemberByName(nickName:String):Member{
         for (member in members) {
             if (member.getName() == nickName){
