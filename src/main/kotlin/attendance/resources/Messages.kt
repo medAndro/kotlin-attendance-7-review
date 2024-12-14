@@ -20,6 +20,8 @@ enum class Messages(private val message: String) {
     WRONG_SYNTAX("잘못된 형식을 입력하였습니다.\n"),
     HOLIDAY("[ERROR] %s %s요일은 등교일이 아닙니다.\n"),
     WRONG_NICKNAME("등록되지 않은 닉네임입니다.\n"),
+    READY_ATTENDANCE("이미 출석을 확인하였습니다. 필요한 경우 수정 기능을 이용해 주세요."),
+
     EMPTY_INPUT("입력값이 비어있습니다."),
     NOT_INTEGER("입력값이 정수가 아닙니다."),
     INVALID_ERROR("알 수 없는 오류가 발생했습니다.");

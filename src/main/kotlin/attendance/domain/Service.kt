@@ -19,11 +19,19 @@ class Service(
             view.showMessage(HOLIDAY.formattedMessage(monthDate, dayName))
             return
         }
+
+        //닉네임 입력기능
         view.showMessage(INPUT_NICKNAME.message())
         val nickName = view.readLine()
 
         if (!attendanceBook.isRightNickName(nickName)){
             view.showMessage(WRONG_NICKNAME.errorMessage())
+            return
+        }
+
+        // 이미 출석했는지 확인하는 기능
+        if (attendanceBook.isNameInBook(nickName, now)){
+            view.showMessage(READY_ATTENDANCE.errorMessage())
             return
         }
     }

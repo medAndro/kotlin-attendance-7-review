@@ -32,4 +32,18 @@ class AttendanceBook {
         }
         return false
     }
+
+    fun isNameInBook(nickName:String, now:LocalDateTime): Boolean{
+        val member = getMemberByName(nickName)
+        return member.isAttendedNow(now)
+    }
+
+    private fun getMemberByName(nickName:String):Member{
+        for (member in members) {
+            if (member.getName() == nickName){
+                return member
+            }
+        }
+        return Member("멤버 없음", mutableListOf())
+    }
 }
