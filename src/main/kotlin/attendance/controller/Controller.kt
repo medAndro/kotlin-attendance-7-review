@@ -1,9 +1,12 @@
 package attendance.controller
 
+import attendance.domain.CSVLoadService
 import attendance.view.GameView
 import attendance.domain.InputValidator
 import attendance.domain.GameService
+import attendance.model.AttendanceBook
 import attendance.model.NumberBasket
+import attendance.resources.AppConfig
 import attendance.resources.Messages.*
 import camp.nextstep.edu.missionutils.DateTimes
 import java.time.format.DateTimeFormatter
@@ -13,10 +16,12 @@ import java.util.Locale
 class Controller(
     private val gameView: GameView,
     private val validator: InputValidator,
-    private val gameService: GameService
+    private val gameService: GameService,
+    private val csvLoadService: CSVLoadService
 ) {
     fun start() {
         showInfoMessage()
+        val attendanceBook = makeAttendanceBook()
     }
 
     private fun showInfoMessage() {
@@ -25,6 +30,12 @@ class Controller(
         val monthDate = now.format(pattern);
         val dayName = now.dayOfWeek.getDisplayName(TextStyle.NARROW, Locale.KOREAN)
         gameView.showMessage(START_INFO.formattedMessage(monthDate, dayName))
+    }
+
+    private fun makeAttendanceBook(): AttendanceBook{
+        val attendBook = AttendanceBook()
+        attendBook.addByPair(csvLoadService.loadAttendance(AppConfig.CSV_FILE_LOCATION.value))
+        return attendBook
     }
 
     private fun generateNumberBasket(): NumberBasket {
@@ -58,7 +69,8 @@ class Controller(
             val gameView = GameView()
             val inputValidator = InputValidator()
             val gameService = GameService()
-            return Controller(gameView, inputValidator, gameService)
+            val csvLoadService = CSVLoadService()
+            return Controller(gameView, inputValidator, gameService, csvLoadService)
         }
     }
 }
