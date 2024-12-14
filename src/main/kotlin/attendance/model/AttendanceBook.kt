@@ -25,4 +25,11 @@ class AttendanceBook {
     fun getMembers():List<Member>{
         return members.toList()
     }
+
+    fun isRightNickName(nickName:String): Boolean{
+        if (nickName in names){
+            return true
+        }
+        return false
+    }
 }

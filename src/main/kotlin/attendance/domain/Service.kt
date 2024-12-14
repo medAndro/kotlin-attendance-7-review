@@ -1,8 +1,7 @@
 package attendance.domain
 
 import attendance.model.AttendanceBook
-import attendance.resources.Messages
-import attendance.resources.Messages.WRONG_SYNTAX
+import attendance.resources.Messages.*
 import attendance.view.View
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -17,7 +16,14 @@ class Service(
         val monthDate = now.format(pattern);
         val dayName = now.dayOfWeek.getDisplayName(TextStyle.NARROW, Locale.KOREAN)
         if (dayName == "토" || dayName == "일"){
-            view.showMessage(Messages.HOLIDAY.formattedMessage(monthDate, dayName))
+            view.showMessage(HOLIDAY.formattedMessage(monthDate, dayName))
+            return
+        }
+        view.showMessage(INPUT_NICKNAME.message())
+        val nickName = view.readLine()
+
+        if (!attendanceBook.isRightNickName(nickName)){
+            view.showMessage(WRONG_NICKNAME.errorMessage())
             return
         }
     }
