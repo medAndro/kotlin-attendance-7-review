@@ -2,6 +2,8 @@ package attendance.model
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
+import java.util.*
 
 class Member(
     private val name: String,
@@ -36,6 +38,18 @@ class Member(
         return date
     }
 
+    fun getHistory(){
+        attendances.sort()
+        val monthDatePattern = DateTimeFormatter.ofPattern("MM월 dd일")
+        val hourMinutePattern = DateTimeFormatter.ofPattern("HH:mm")
+
+        attendances.forEach{
+            val monthDate = it.format(monthDatePattern)
+            val hourMinute = it.format(hourMinutePattern)
+            val dayName = it.dayOfWeek.getDisplayName(TextStyle.NARROW, Locale.KOREAN)
+            println("${monthDate} ${dayName}요일 ${hourMinute}")
+        }
+    }
 
     fun isAttendedNow(now:LocalDateTime):Boolean{
         val pattern = DateTimeFormatter.ofPattern("MM월 dd일");

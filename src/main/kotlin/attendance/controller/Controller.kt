@@ -5,7 +5,6 @@ import attendance.view.View
 import attendance.domain.InputValidator
 import attendance.domain.Service
 import attendance.model.AttendanceBook
-import attendance.model.NumberBasket
 import attendance.resources.AppConfig
 import attendance.resources.Messages.*
 import camp.nextstep.edu.missionutils.DateTimes
@@ -68,7 +67,7 @@ class Controller(
                 service.menu2(now, attendanceBook)
             }
             if (menuText == "3"){
-                service.menu3()
+                service.menu3(attendanceBook)
             }
             if (menuText == "4"){
                 service.menu4()
@@ -81,32 +80,6 @@ class Controller(
         }
         return false
     }
-
-    private fun generateNumberBasket(): NumberBasket {
-        val basket = NumberBasket()
-
-        basket.addNumber(readNumberWithRetry(LEFT_VALUE_INPUT.infoMessage()))
-        basket.addNumber(readNumberWithRetry(RIGHT_VALUE_INPUT.infoMessage()))
-
-        return basket
-    }
-
-    private fun readNumberWithRetry(infoMessage: String): Int {
-        while (true) {
-            try {
-                view.showMessage(infoMessage)
-//                return validator.validateSelect(view.readLine())
-            } catch (e: IllegalArgumentException) {
-                view.showMessage(e.message ?: INVALID_ERROR.errorMessage())
-            }
-        }
-    }
-
-//    private fun announceSumNumbers(numberBasket: NumberBasket) {
-//        val expression = gameService.getExpression(numberBasket)
-//        val sumValue = gameService.plusTwoNumber(numberBasket)
-//        gameView.showMessage(SUM_RESULT.formattedMessage(expression, sumValue))
-//    }
 
     companion object {
         fun create(): Controller {

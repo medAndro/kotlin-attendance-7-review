@@ -48,6 +48,12 @@ class AttendanceBook {
         return member.editDate(date)
     }
 
+    fun getAttendanceDateHistory(nickName:String ){
+        val member = getMemberByName(nickName)
+
+        member.getHistory()
+    }
+
     private fun getMemberByName(nickName:String):Member{
         for (member in members) {
             if (member.getName() == nickName){

@@ -3,7 +3,6 @@ package attendance.domain
 import attendance.model.AttendanceBook
 import attendance.resources.Messages.*
 import attendance.view.View
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
@@ -97,8 +96,6 @@ class Service(
         val year_Month_Date = now.format(pattern2);
         val attendDate = LocalDateTime.parse("${year_Month_Date} $time", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
         val beforeDate = attendanceBook.editAttendanceDate(nickName, attendDate)
-//        view.showMessage(beforeDate.toString())
-//        view.showMessage(attendDate.toString())
 
 
         val mmddpattern = DateTimeFormatter.ofPattern("MM월 dd일");
@@ -112,8 +109,13 @@ class Service(
 
     }
 
-    fun menu3() {
-        println("메뉴3")
+    fun menu3(attendanceBook: AttendanceBook) {
+        //닉네임 입력기능
+        view.showMessage(INPUT_NICKNAME.message())
+        val nickName = view.readLine()
+
+        view.showMessage("이번 달 ${nickName}의 출석 기록입니다.\n")
+        attendanceBook.getAttendanceDateHistory(nickName)
     }
 
     fun menu4() {
