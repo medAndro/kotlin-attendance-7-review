@@ -48,10 +48,10 @@ class AttendanceBook {
         return member.editDate(date)
     }
 
-    fun getAttendanceDateHistory(nickName:String ){
+    fun getAttendanceDateHistory(now: LocalDateTime, nickName:String ){
         val member = getMemberByName(nickName)
 
-        member.getHistory()
+        member.getHistory(now)
     }
 
     private fun getMemberByName(nickName:String):Member{

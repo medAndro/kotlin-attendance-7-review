@@ -67,7 +67,7 @@ class Controller(
                 service.menu2(now, attendanceBook)
             }
             if (menuText == "3"){
-                service.menu3(attendanceBook)
+                service.menu3(now, attendanceBook)
             }
             if (menuText == "4"){
                 service.menu4()

@@ -109,13 +109,13 @@ class Service(
 
     }
 
-    fun menu3(attendanceBook: AttendanceBook) {
+    fun menu3(now: LocalDateTime, attendanceBook: AttendanceBook) {
         //닉네임 입력기능
         view.showMessage(INPUT_NICKNAME.message())
         val nickName = view.readLine()
 
         view.showMessage("이번 달 ${nickName}의 출석 기록입니다.\n")
-        attendanceBook.getAttendanceDateHistory(nickName)
+        attendanceBook.getAttendanceDateHistory(now, nickName)
     }
 
     fun menu4() {
