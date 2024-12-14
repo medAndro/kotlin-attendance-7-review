@@ -33,7 +33,7 @@ class Controller(
 
     private fun showInfoMessage():String {
         now = DateTimes.now()
-        now = now.minusDays(1)
+//        now = now.minusDays(1)
         val pattern = DateTimeFormatter.ofPattern("MM월 dd일");
         val monthDate = now.format(pattern);
         val dayName = now.dayOfWeek.getDisplayName(TextStyle.NARROW, Locale.KOREAN)

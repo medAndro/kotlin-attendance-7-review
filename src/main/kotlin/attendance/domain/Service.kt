@@ -107,7 +107,7 @@ class Service(
 
 
         val timePattern = DateTimeFormatter.ofPattern("HH:mm");
-        val beforeTimeString = now.format(timePattern);
+        val beforeTimeString = beforeDate.format(timePattern);
         view.showMessage("\n${monthDate} ${dayName}요일 ${beforeTimeString} -> $time 수정 완료!\n")
 
     }
